@@ -1,5 +1,6 @@
 This script retrieve pulse from many energy counter referenced in a dict variable, made a mean kWh, and inject them in influxdb
-
+don't forget to modify all CAPITAL variables
+export token with 'export INFLUXDB_TOKEN=xxxx"
 
 You can add it as a service, creating /etc/systemd/systemm/energymeter.service
 
