@@ -1,0 +1,3 @@
+rpi-lgpio
+gpiozero
+influxdb_client
