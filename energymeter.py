@@ -11,16 +11,21 @@ INPUT_PINS = {
     25: "BECS zone 2"
 }
 
-buttons = {pin: Button(pin, pull_up=True) for pin in INPUT_PINS}
-last_pulse_times = {pin: None for pin in INPUT_PINS}
-counter = {pin: None for pin in INPUT_PINS}
-instant_power_kW = {pin: 0 for pin in INPUT_PINS}
-
 # Configuration InfluxDB
 INFLUXDB_URL = "http://10.20.99.10:8086"
 INFLUXDB_TOKEN = os.getenv("INFLUXDB_TOKEN")
 INFLUXDB_ORG = "okto"
 INFLUXDB_BUCKET = "energymeter"
+
+#
+#name of the server in influxdb
+SERVERNAME = "em-zone3"
+
+buttons = {pin: Button(pin, pull_up=True) for pin in INPUT_PINS}
+last_pulse_times = {pin: None for pin in INPUT_PINS}
+counter = {pin: None for pin in INPUT_PINS}
+instant_power_kW = {pin: 0 for pin in INPUT_PINS}
+
 
 client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
 write_api = client.write_api(write_options=WriteOptions(batch_size=1))
@@ -43,7 +48,7 @@ def send_power_to_influx():
         for pin, power in instant_power_kW.items():
             point = (
                 Point("power_consumption")
-                .tag("source", "em-zone3")
+                .tag("source", SERVERNAME)
                 .tag("sensor", INPUT_PINS[pin])
                 .field("power", float(power))
             )
